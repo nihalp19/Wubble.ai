@@ -181,4 +181,6 @@ app.post('/api/generate-track', (req, res) => {
         });
     }, 2000);
 });
-exports.default = app;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
