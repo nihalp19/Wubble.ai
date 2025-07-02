@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 const FRONTEND_URL: string = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 app.use(cors({
-  origin: [FRONTEND_URL],
+  origin: [FRONTEND_URL,"https://wubble-ai.vercel.app/"],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true
 }));
