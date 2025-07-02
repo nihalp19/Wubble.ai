@@ -4,7 +4,7 @@ import { useSongStore } from "@/store/useSongStore";
 
 export function SongPlayerBar() {
   // Get the current song from your Zustand store
-  const { songs, recentSongs } = useSongStore();
+  const { songs} = useSongStore();
   const currentSong = songs[0]; // Or however you want to select the current song
 
   // Audio playback state
