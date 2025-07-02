@@ -18,8 +18,9 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5000;
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 app.use((0, cors_1.default)({
-    origin: 'http://localhost:5173', // Adjust this to your frontend URL
+    origin: [FRONTEND_URL],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     credentials: true
 }));
@@ -180,6 +181,4 @@ app.post('/api/generate-track', (req, res) => {
         });
     }, 2000);
 });
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+exports.default = app;
