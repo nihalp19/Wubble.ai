@@ -4,11 +4,41 @@ import { SparklesText } from "@/components/magicui/sparkles-text";
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import MagicCardDemo from "./demo-components/MagicCardDemo";
 import { ShimmerButton } from "./components/magicui/shimmer-btn";
+import { useSongStore } from "./store/useSongStore";
+import { useEffect } from "react";
+import { SongPlayerBar } from "./demo-components/SongPlayerBar";
 
-const mood = ["Happy", "Sad", "Energetic", "Chill"];
-const genre = ["Pop", "Lofi", "Cinematic", "EDM"];
+
 
 function App() {
+
+
+  const { moods, genres, setCurrentGenre, setCurrentMood, currentGenre, currentMood, songs } = useSongStore()
+
+  useEffect(() => {
+    useSongStore.getState().fetchMoods();
+    useSongStore.getState().fetchGenres();
+  }, []);
+
+
+  console.log("songs", songs);
+
+  const genrateTrack = async () => {
+    if (!currentMood || !currentGenre) {
+      alert("Please select both mood and genre");
+      return;
+    }
+
+    try {
+      await useSongStore.getState().fetchSongs(currentMood, currentGenre);
+      setCurrentMood("");
+      setCurrentGenre("");
+    } catch (error) {
+      console.error("Error generating track:", error);
+    }
+  };
+
+
   return (
     <div className="w-full bg-black min-h-screen flex flex-col items-center  pt-8 sm:pt-10 px-4">
       <FlickeringGrid />
@@ -30,31 +60,38 @@ function App() {
         AI compose the perfect track for you
       </SparklesText>
 
-        <h2 className="text-white text-xl font-bold mt-5">Choose Your Moode</h2>
+      <h2 className="text-white text-xl font-bold mt-5">Choose Your Mood</h2>
 
-        <div className="grid  grid-cols-2 sm:grid-cols-4 gap-4 mt-6 w-full max-w-2xl">
-          {mood.map((m) => (
-            <MagicCardDemo key={m} title={m} />
-          ))}
-        </div>
+      <div className="grid  grid-cols-2 sm:grid-cols-4 gap-4 mt-6 w-full max-w-2xl">
+        {moods && moods.map((m) => (
+          <div key={m} onClick={() => setCurrentMood(m)} className="cursor-pointer">
+            <MagicCardDemo title={m} />
+          </div>
+        ))}
+      </div>
 
-        <h2 className="text-white text-xl font-bold mt-5">Choose Your Genre</h2>
+      <h2 className="text-white text-xl font-bold mt-5">Choose Your Genre</h2>
 
-        {/* Genre Cards */}
-        <div className="grid  grid-cols-2 sm:grid-cols-4 gap-4 mt-4 w-full max-w-2xl">
-          {genre.map((g) => (
-            <MagicCardDemo key={g} title={g} />
-          ))}
-        </div>
+      {/* Genre Cards */}
+      <div className="grid  grid-cols-2 sm:grid-cols-4 gap-4 mt-4 w-full max-w-2xl">
+        {genres && genres.map((g) => (
+          <div key={g} onClick={() => setCurrentGenre(g)} className="cursor-pointer">
+            <MagicCardDemo title={g} />
+          </div>
+        ))}
+      </div>
 
 
       {/* Generate Button */}
-      <ShimmerButton className="shadow-2xl mt-16 w-full max-w-xs h-12 sm:w-[200px] sm:h-[50px]">
+      <ShimmerButton className="shadow-2xl mt-15 w-full max-w-xs h-12 sm:w-[200px] sm:h-[50px]" onClick={genrateTrack}>
         <span className="whitespace-pre-wrap font-bold text-center text-sm sm:text-base md:text-lg leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
           Generate
         </span>
       </ShimmerButton>
+      <SongPlayerBar />
     </div>
+
+
   );
 }
 
