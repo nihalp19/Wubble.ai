@@ -10,7 +10,7 @@ const genre = ["Pop", "Lofi", "Cinematic", "EDM"];
 
 function App() {
   return (
-    <div className="w-full bg-black min-h-screen flex flex-col items-center justify-center pt-8 sm:pt-10 px-4">
+    <div className="w-full bg-black min-h-screen flex flex-col items-center  pt-8 sm:pt-10 px-4">
       <FlickeringGrid />
 
       <LineShadowText
@@ -30,13 +30,15 @@ function App() {
         AI compose the perfect track for you
       </SparklesText>
 
-
+        <h2 className="text-white text-xl font-bold mt-5">Choose Your Moode</h2>
 
         <div className="grid  grid-cols-2 sm:grid-cols-4 gap-4 mt-6 w-full max-w-2xl">
           {mood.map((m) => (
             <MagicCardDemo key={m} title={m} />
           ))}
         </div>
+
+        <h2 className="text-white text-xl font-bold mt-5">Choose Your Genre</h2>
 
         {/* Genre Cards */}
         <div className="grid  grid-cols-2 sm:grid-cols-4 gap-4 mt-4 w-full max-w-2xl">
