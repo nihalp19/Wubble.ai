@@ -7,13 +7,13 @@ import { ShimmerButton } from "./components/magicui/shimmer-btn";
 import { useSongStore } from "./store/useSongStore";
 import { useEffect } from "react";
 import { SongPlayerBar } from "./demo-components/SongPlayerBar";
-
+import { SongGeneratingLoader } from "./demo-components/SongGeneratingLoader";
 
 
 function App() {
 
 
-  const { moods, genres, setCurrentGenre, setCurrentMood, currentGenre, currentMood, songs } = useSongStore()
+  const { moods, genres, setCurrentGenre, setCurrentMood, currentGenre, currentMood, songs, loading } = useSongStore()
 
   useEffect(() => {
     useSongStore.getState().fetchMoods();
@@ -31,6 +31,13 @@ function App() {
 
     try {
       await useSongStore.getState().fetchSongs(currentMood, currentGenre);
+
+      // ✅ Auto-play the new song after fetching
+      setTimeout(() => {
+        const audio = document.querySelector("audio");
+        if (audio) audio.play();
+      }, 300);
+
       setCurrentMood("");
       setCurrentGenre("");
     } catch (error) {
@@ -41,6 +48,9 @@ function App() {
 
   return (
     <div className="w-full bg-black min-h-screen flex flex-col items-center  pt-8 sm:pt-10 px-4">
+
+      {loading && <SongGeneratingLoader isVisible={loading} mood={currentMood} genre={currentGenre} ></SongGeneratingLoader>}
+
       <FlickeringGrid />
 
       <LineShadowText
