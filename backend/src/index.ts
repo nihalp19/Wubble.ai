@@ -205,7 +205,7 @@ app.post('/api/generate-track', (req, res) => {
         generatedAt: new Date().toISOString()
       }
     });
-  }, 2000);
+  }, 5000);
 });
 
 app.listen(PORT, () => {
