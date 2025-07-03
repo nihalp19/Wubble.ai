@@ -1,16 +1,17 @@
 import { useState, useRef, useEffect } from "react";
-import { Play, Pause, Download, Clock, History } from "lucide-react";
+import { Play, Pause, Download, Clock, History, Heart } from "lucide-react";
 import { useSongStore } from "@/store/useSongStore";
 
 export function SongPlayerBar() {
   // Get the current song from your Zustand store
-  const { songs} = useSongStore();
-  const currentSong = songs[0]; // Or however you want to select the current song
+  const { getCurrentSong, toggleLike, addToRecentSongs, recentSongs, setCurrentSongIndex } = useSongStore();
+  const currentSong = getCurrentSong();
 
   // Audio playback state
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [showRecentSongs, setShowRecentSongs] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // Play/Pause logic
@@ -20,8 +21,34 @@ export function SongPlayerBar() {
       audioRef.current.pause();
     } else {
       audioRef.current.play();
+      // Add to recent when playing starts
+      if (currentSong) {
+        addToRecentSongs(currentSong);
+      }
     }
     setIsPlaying((prev) => !prev);
+  };
+
+  // Handle like toggle
+  const handleLikeToggle = () => {
+    if (currentSong) {
+      toggleLike(currentSong.id);
+    }
+  };
+
+  // Handle recent songs toggle
+  const handleRecentToggle = () => {
+    setShowRecentSongs(!showRecentSongs);
+  };
+
+  // Handle recent song selection
+  const handleRecentSongSelect = (song: any) => {
+    const { songs } = useSongStore.getState();
+    const songIndex = songs.findIndex(s => s.id === song.id);
+    if (songIndex !== -1) {
+      setCurrentSongIndex(songIndex);
+    }
+    setShowRecentSongs(false);
   };
 
   // Update timer and duration
@@ -79,6 +106,27 @@ export function SongPlayerBar() {
           onEnded={() => setIsPlaying(false)}
         />
         
+        {/* Recent Songs Dropdown */}
+        {showRecentSongs && recentSongs.length > 0 && (
+          <div className="mb-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden">
+            <div className="p-3">
+              <h4 className="text-white font-semibold text-sm mb-2">Recent Songs</h4>
+              <div className="space-y-1 max-h-40 overflow-y-auto">
+                {recentSongs.map((song) => (
+                  <button
+                    key={song.id}
+                    onClick={() => handleRecentSongSelect(song)}
+                    className="w-full text-left p-2 rounded-lg hover:bg-white/10 transition-colors"
+                  >
+                    <div className="text-white text-sm font-medium truncate">{song.title}</div>
+                    <div className="text-white/70 text-xs truncate">{song.artist}</div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* Main Player Container - Slimmed down */}
         <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden">
           {/* Progress Bar Background */}
@@ -127,10 +175,23 @@ export function SongPlayerBar() {
                   
                   {/* Secondary Controls */}
                   <button
+                    className={`w-8 h-8 rounded-full border border-white/15 transition-all duration-200 flex items-center justify-center ${
+                      currentSong.isLiked 
+                        ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' 
+                        : 'bg-white/10 hover:bg-white/20 text-white/90'
+                    }`}
+                    aria-label="Like Song"
+                    type="button"
+                    onClick={handleLikeToggle}
+                  >
+                    <Heart className={`w-3 h-3 ${currentSong.isLiked ? 'fill-current' : ''}`} />
+                  </button>
+                  
+                  <button
                     className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 transition-all duration-200 flex items-center justify-center"
                     aria-label="Recent Songs"
                     type="button"
-                    onClick={() => alert("Show recent songs")}
+                    onClick={handleRecentToggle}
                   >
                     <History className="w-3 h-3 text-white/90" />
                   </button>
@@ -190,10 +251,23 @@ export function SongPlayerBar() {
                 {/* Secondary Controls */}
                 <div className="flex items-center gap-2">
                   <button
+                    className={`w-9 h-9 rounded-full border border-white/15 transition-all duration-200 flex items-center justify-center group ${
+                      currentSong.isLiked 
+                        ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400' 
+                        : 'bg-white/10 hover:bg-white/20 text-white/90'
+                    }`}
+                    aria-label="Like Song"
+                    type="button"
+                    onClick={handleLikeToggle}
+                  >
+                    <Heart className={`w-4 h-4 group-hover:scale-110 transition-transform ${currentSong.isLiked ? 'fill-current' : ''}`} />
+                  </button>
+
+                  <button
                     className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 transition-all duration-200 flex items-center justify-center group"
                     aria-label="Recent Songs"
                     type="button"
-                    onClick={() => alert("Show recent songs")}
+                    onClick={handleRecentToggle}
                   >
                     <History className="w-4 h-4 text-white/90 group-hover:scale-110 transition-transform" />
                   </button>
