@@ -8,6 +8,7 @@ import { useSongStore } from "./store/useSongStore";
 import { useEffect } from "react";
 import { SongPlayerBar } from "./demo-components/SongPlayerBar";
 import { SongGeneratingLoader } from "./demo-components/SongGeneratingLoader";
+import { LoadingSpinner } from "./demo-components/LoadingSpinner";
 
 
 function App() {
@@ -32,7 +33,6 @@ function App() {
     try {
       await useSongStore.getState().fetchSongs(currentMood, currentGenre);
 
-      // ✅ Auto-play the new song after fetching
       setTimeout(() => {
         const audio = document.querySelector("audio");
         if (audio) audio.play();
@@ -44,6 +44,17 @@ function App() {
       console.error("Error generating track:", error);
     }
   };
+
+  if(moods.length === 0 || genres.length === 0) { 
+    return (
+      <div className="w-full bg-black min-h-screen flex flex-col items-center justify-center pt-8 sm:pt-10 px-4">
+        <LoadingSpinner />
+        <AuroraText className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mt-2">
+          Loading moods and genres...
+        </AuroraText>
+      </div>
+    );
+  }
 
 
   return (
@@ -82,7 +93,6 @@ function App() {
 
       <h2 className="text-white text-xl font-bold mt-5">Choose Your Genre</h2>
 
-      {/* Genre Cards */}
       <div className="grid  grid-cols-2 sm:grid-cols-4 gap-4 mt-4 w-full max-w-2xl">
         {genres && genres.map((g) => (
           <div key={g} onClick={() => setCurrentGenre(g)} className="cursor-pointer">
@@ -92,7 +102,6 @@ function App() {
       </div>
 
 
-      {/* Generate Button */}
       <ShimmerButton className="shadow-2xl mt-15 w-full max-w-xs h-12 sm:w-[200px] sm:h-[50px]" onClick={genrateTrack}>
         <span className="whitespace-pre-wrap font-bold text-center text-sm sm:text-base md:text-lg leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
           Generate
