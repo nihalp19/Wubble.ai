@@ -7,25 +7,29 @@ export function SongPlayerBar() {
   const {
     getCurrentSong,
     toggleLike,
+    likedSongs,
     addToRecentSongs,
     recentSongs,
     setCurrentSongIndex,
   } = useSongStore();
 
   const currentSong = getCurrentSong();
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [showRecentSongs, setShowRecentSongs] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const autoHideTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  const isLiked = currentSong ? likedSongs.some((s) => s.id === currentSong.id) : false;
+
   const handlePlayPause = () => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
     if (isPlaying) {
-      audioRef.current.pause();
+      audio.pause();
     } else {
-      audioRef.current.play();
+      audio.play();
       if (currentSong) addToRecentSongs(currentSong);
     }
   };
@@ -48,6 +52,19 @@ export function SongPlayerBar() {
     if (index !== -1) setCurrentSongIndex(index);
     setShowRecentSongs(false);
   };
+
+
+  function getDownloadableUrl(url: string, filename?: string) {
+    const base = url.split("/upload/");
+    if (base.length !== 2) return url;
+
+    const safeFilename = encodeURIComponent(
+      (filename || "track").replace(/\s+/g, "_")
+    );
+
+    return `${base[0]}/upload/fl_attachment:${safeFilename}/${base[1]}`;
+  }
+
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -75,8 +92,19 @@ export function SongPlayerBar() {
 
   useEffect(() => {
     setCurrentTime(0);
-    if (audioRef.current) {
-      audioRef.current.currentTime = 0;
+    const audio = audioRef.current;
+    if (audio) {
+      audio.currentTime = 0;
+      // Try autoplay in useEffect (browser sometimes blocks autoplay in initial load)
+      setTimeout(() => {
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Autoplay blocked
+            setIsPlaying(false);
+          });
+        }
+      }, 300);
     }
   }, [currentSong?.url]);
 
@@ -109,9 +137,7 @@ export function SongPlayerBar() {
               className="mb-2 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden"
             >
               <div className="p-3">
-                <h4 className="text-white font-semibold text-sm mb-2">
-                  Recent Songs
-                </h4>
+                <h4 className="text-white font-semibold text-sm mb-2">Recent Songs</h4>
                 <div className="space-y-1 max-h-40 overflow-y-auto">
                   {recentSongs.map((song) => (
                     <button
@@ -171,14 +197,13 @@ export function SongPlayerBar() {
 
               <button
                 onClick={handleLikeToggle}
-                className={`w-8 h-8 rounded-full border border-white/15 transition-all duration-200 flex items-center justify-center ${
-                  currentSong.isLiked
-                    ? "bg-red-500/20 hover:bg-red-500/30 text-red-400"
-                    : "bg-white/10 hover:bg-white/20 text-white/90"
-                }`}
+                className={`w-8 h-8 rounded-full border border-white/15 transition-all duration-200 flex items-center justify-center ${isLiked
+                  ? "bg-red-500/20 hover:bg-red-500/30 text-red-400"
+                  : "bg-white/10 hover:bg-white/20 text-white/90"
+                  }`}
               >
                 <Heart
-                  className={`w-3 h-3 ${currentSong.isLiked ? "fill-current" : ""}`}
+                  className={`w-3 h-3 ${isLiked ? "fill-current text-red-400" : ""}`}
                 />
               </button>
 
@@ -189,7 +214,10 @@ export function SongPlayerBar() {
                 <History className="w-3 h-3 text-white/90" />
               </button>
 
-              <a href={currentSong.url} download={currentSong.title}>
+              <a
+                href={getDownloadableUrl(currentSong.url, currentSong.title)}
+                download={currentSong.title + ".mp3"}
+              >
                 <button
                   className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 transition-all duration-200 flex items-center justify-center"
                 >
