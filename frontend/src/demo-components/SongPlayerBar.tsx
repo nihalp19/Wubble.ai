@@ -54,17 +54,6 @@ export function SongPlayerBar() {
   };
 
 
-  function getDownloadableUrl(url: string, filename?: string) {
-    const base = url.split("/upload/");
-    if (base.length !== 2) return url;
-
-    const safeFilename = encodeURIComponent(
-      (filename || "track").replace(/\s+/g, "_")
-    );
-
-    return `${base[0]}/upload/fl_attachment:${safeFilename}/${base[1]}`;
-  }
-
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -95,12 +84,10 @@ export function SongPlayerBar() {
     const audio = audioRef.current;
     if (audio) {
       audio.currentTime = 0;
-      // Try autoplay in useEffect (browser sometimes blocks autoplay in initial load)
       setTimeout(() => {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.catch(() => {
-            // Autoplay blocked
             setIsPlaying(false);
           });
         }
@@ -217,7 +204,7 @@ export function SongPlayerBar() {
               <a
                 href={currentSong.download}
                 download={currentSong.title + ".mp3"}
-                onClick={(e) => e.stopPropagation()} // ✅ Prevent propagation
+                onClick={(e) => e.stopPropagation()}
               >
                 <button
                   type="button"
