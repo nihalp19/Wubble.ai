@@ -49,7 +49,7 @@ function App() {
     return (
       <div className="w-full bg-black min-h-screen flex flex-col items-center justify-center pt-8 sm:pt-10 px-4">
         <LoadingSpinner />
-        <AuroraText className="text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mt-2">
+        <AuroraText className="text-white text-2xl  font-bold text-center mt-2">
           Loading moods and genres...
         </AuroraText>
       </div>
