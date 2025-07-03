@@ -215,10 +215,12 @@ export function SongPlayerBar() {
               </button>
 
               <a
-                href={getDownloadableUrl(currentSong.url, currentSong.title)}
+                href={currentSong.download}
                 download={currentSong.title + ".mp3"}
+                onClick={(e) => e.stopPropagation()} // ✅ Prevent propagation
               >
                 <button
+                  type="button"
                   className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 transition-all duration-200 flex items-center justify-center"
                 >
                   <Download className="w-3 h-3 text-white/90" />

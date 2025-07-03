@@ -34,13 +34,13 @@ const moods = ["happy", "sad", "energetic", "chill"];
 const genres = ["pop", "lofi", "cinematic", "edm"];
 
 
-
 const mockTracks = [
   {
     id: 1,
     title: 'Blinding Lights',
     artist: 'The Weeknd',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444264/ps4zq3srtdrfxyvhrapc.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Blinding_Lights/ps4zq3srtdrfxyvhrapc.mp3',
     duration: 200,
     mood: 'happy',
     genre: 'pop'
@@ -50,6 +50,7 @@ const mockTracks = [
     title: 'Raabta (Lofi Remix)',
     artist: 'Arijit Singh',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444260/mfixymezpkoktarhklqm.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Raabta_Lofi_Remix/mfixymezpkoktarhklqm.mp3',
     duration: 180,
     mood: 'happy',
     genre: 'lofi'
@@ -59,6 +60,7 @@ const mockTracks = [
     title: 'Lut Gaye',
     artist: 'Arijit Singh',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444249/xfhi1cy26tzv3sceieqj.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Lut_Gaye/xfhi1cy26tzv3sceieqj.mp3',
     duration: 190,
     mood: 'happy',
     genre: 'cinematic'
@@ -68,6 +70,7 @@ const mockTracks = [
     title: 'Starboy (Kygo Remix)',
     artist: 'The Weeknd',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444251/g9qzj9rdc6v31i9whcbk.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Starboy_Kygo_Remix/g9qzj9rdc6v31i9whcbk.mp3',
     duration: 210,
     mood: 'happy',
     genre: 'edm'
@@ -77,6 +80,7 @@ const mockTracks = [
     title: 'Call Out My Name',
     artist: 'The Weeknd',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444256/jvf0nxodvd5knttqvurz.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Call_Out_My_Name/jvf0nxodvd5knttqvurz.mp3',
     duration: 220,
     mood: 'sad',
     genre: 'pop'
@@ -86,6 +90,7 @@ const mockTracks = [
     title: 'Apna Bana Le (Lofi)',
     artist: 'Arijit Singh',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444247/zceawfngk3jtcaj5ecyp.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Apna_Bana_Le_Lofi/zceawfngk3jtcaj5ecyp.mp3',
     duration: 185,
     mood: 'sad',
     genre: 'lofi'
@@ -95,6 +100,7 @@ const mockTracks = [
     title: 'Tum Hi Ho',
     artist: 'Arijit Singh',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444255/v3iczmgbigfihckj1hma.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Tum_Hi_Ho/v3iczmgbigfihckj1hma.mp3',
     duration: 240,
     mood: 'sad',
     genre: 'cinematic'
@@ -104,6 +110,7 @@ const mockTracks = [
     title: 'Tu Aake Dekhle',
     artist: 'King',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444254/pq88drlbevrce0yenyja.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Tu_Aake_Dekhle/pq88drlbevrce0yenyja.mp3',
     duration: 175,
     mood: 'energetic',
     genre: 'pop'
@@ -113,6 +120,7 @@ const mockTracks = [
     title: 'She Move It Like (Lofi Remix)',
     artist: 'Badshah',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444249/evdumqwnp6jdjscqmblj.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:She_Move_It_Like_Lofi_Remix/evdumqwnp6jdjscqmblj.mp3',
     duration: 165,
     mood: 'energetic',
     genre: 'lofi'
@@ -122,6 +130,7 @@ const mockTracks = [
     title: 'Yeh Fitoor Mera',
     artist: 'Arijit Singh',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444256/pdz3n5cszfktj4v0wtsz.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Yeh_Fitoor_Mera/pdz3n5cszfktj4v0wtsz.mp3',
     duration: 195,
     mood: 'energetic',
     genre: 'cinematic'
@@ -131,6 +140,7 @@ const mockTracks = [
     title: 'Die For You (Remix)',
     artist: 'The Weeknd',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444249/ilpratxhhk2bgqdhigay.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Die_For_You_Remix/ilpratxhhk2bgqdhigay.mp3',
     duration: 210,
     mood: 'chill',
     genre: 'pop'
@@ -140,6 +150,7 @@ const mockTracks = [
     title: 'Kya Mujhe Pyaar Hai (Lofi)',
     artist: 'KK',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444247/v2ismvvtrnb15npr18pj.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Kya_Mujhe_Pyaar_Hai_Lofi/v2ismvvtrnb15npr18pj.mp3',
     duration: 180,
     mood: 'chill',
     genre: 'lofi'
@@ -149,6 +160,7 @@ const mockTracks = [
     title: 'Khaabon Ke Parinday',
     artist: 'Mohit Chauhan',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444260/pxjlny9x37pklvurpvs8.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Khaabon_Ke_Parinday/pxjlny9x37pklvurpvs8.mp3',
     duration: 200,
     mood: 'chill',
     genre: 'cinematic'
@@ -158,6 +170,7 @@ const mockTracks = [
     title: 'Nothing’s Gonna Hurt You Baby (EDM Remix)',
     artist: 'Cigarettes After Sex',
     url: 'https://res.cloudinary.com/dxavgp3fo/video/upload/v1751444252/y9ewwdhgzpjh88dhdccs.mp3',
+    download: 'https://res.cloudinary.com/dxavgp3fo/video/upload/fl_attachment:Nothings_Gonna_Hurt_You_Baby_EDM_Remix/y9ewwdhgzpjh88dhdccs.mp3',
     duration: 215,
     mood: 'chill',
     genre: 'edm'

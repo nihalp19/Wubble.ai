@@ -7,6 +7,7 @@ export interface Song {
   title: string;
   artist: string;
   url: string;
+  download: string;
   duration: number;
   mood: string;
   genre: string;
