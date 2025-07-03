@@ -45,7 +45,7 @@ function App() {
     }
   };
 
-  if(moods.length === 0 || genres.length === 0) { 
+  if (moods.length === 0 || genres.length === 0) {
     return (
       <div className="w-full bg-black min-h-screen flex flex-col items-center justify-center pt-8 sm:pt-10 px-4">
         <LoadingSpinner />
@@ -101,13 +101,15 @@ function App() {
         ))}
       </div>
 
+      {currentMood && currentGenre && (<>
+        <ShimmerButton className="shadow-2xl mt-15 w-full max-w-xs h-12 sm:w-[200px] sm:h-[50px]" onClick={genrateTrack}>
+          <span className="whitespace-pre-wrap font-bold text-center text-sm sm:text-base md:text-lg leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
+            Generate
+          </span>
+        </ShimmerButton>
+      </>)}
 
-      <ShimmerButton className="shadow-2xl mt-15 w-full max-w-xs h-12 sm:w-[200px] sm:h-[50px]" onClick={genrateTrack}>
-        <span className="whitespace-pre-wrap font-bold text-center text-sm sm:text-base md:text-lg leading-none tracking-tight text-white dark:from-white dark:to-slate-900/10">
-          Generate
-        </span>
-      </ShimmerButton>
-      <SongPlayerBar />
+      {currentMood || currentGenre ? (<></>) : (<SongPlayerBar />)}
     </div>
 
 
